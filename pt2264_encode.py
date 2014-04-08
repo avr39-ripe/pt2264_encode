@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+#(c) 2014 Alexander V. Ribchansky
+#based on code from http://thomasolson.com/PROJECTS/SC2262/
 from wiringpi2 import *
 
 INPUT = 0
@@ -35,24 +37,24 @@ def pt2262Send(packet):
         for x in range(0, 12):
 
             if packet[x] == '0':
-                print '0'
+#                print '0'
                 ookPulse(PULSESHORT,PULSELONG)
                 ookPulse(PULSESHORT,PULSELONG)
             elif packet[x] == '1':
-                print '1'
+#                print '1'
                 ookPulse(PULSELONG,PULSESHORT)
                 ookPulse(PULSELONG,PULSESHORT)
             elif packet[x] == 'F' or packet[x] == 'f':
-                print 'f'
+#                print 'f'
                 ookPulse(PULSESHORT,PULSELONG)
                 ookPulse(PULSELONG,PULSESHORT)
             elif packet[x] == 'U' or packet[x] == 'u':
-                print 'u'
+#                print 'u'
                 ookPulse(PULSELONG,PULSESHORT)
                 ookPulse(PULSESHORT,PULSELONG)
 
         ookPulse(PULSESHORT,PULSESYNC)
-        print 'sync'
+#        print 'sync'
 
 if __name__ == "__main__":
     while True:
