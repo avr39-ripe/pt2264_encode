@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from wiringpi2 import *
 
 INPUT = 0
