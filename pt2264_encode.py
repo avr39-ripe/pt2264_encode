@@ -9,9 +9,13 @@ HIGH = 1
 
 xmtrPin = 0
 
-PULSESHORT = 500
-PULSELONG = 1500
-PULSESYNC = 16000
+#PULSESHORT = 500
+#PULSELONG = 1500
+#PULSESYNC = 16000
+
+PULSESHORT = 160
+PULSELONG = 500
+PULSESYNC = 5333
 
 wiringPiSetup()
 
@@ -46,9 +50,8 @@ def pt2262Send(packet):
             ookPulse(PULSESHORT,PULSESYNC)
 
 if __name__ == "__main__":
-    pt2262Send("FFF1FFFF0001")
+    while True:
+        pt2262Send("FFFFF0FF0001")
+        pt2262Send("1000FF0FFFFF")
 
-    delay(2000)
-
-    pt2262Send("FFF1FFFF0010")
 
