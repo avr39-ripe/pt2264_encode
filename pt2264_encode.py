@@ -46,10 +46,9 @@ def pt2262Send(packet):
             ookPulse(PULSESHORT,PULSESYNC)
 
 if __name__ == "__main__":
-    pt2262Send("00F0FF00FFFF")
+    pt2262Send("FFF1FFFF0001")
 
-    delay(3000)
+    delay(2000)
 
-    pt2262Send("F000FF00FFFF")
+    pt2262Send("FFF1FFFF0010")
 
-    delay(3000)
