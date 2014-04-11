@@ -59,6 +59,5 @@ def pt2262Send(packet):
 if __name__ == "__main__":
     while True:
         pt2262Send("FFFFF0FF0001")
-#        pt2262Send("1000FF0FFFFF")
-
+        pt2262Send("FFFFF0FF0010")
 
