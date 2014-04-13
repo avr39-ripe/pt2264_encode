@@ -22,7 +22,7 @@ PULSESYNC = 16000
 wiringPiSetup()
 
 pinMode(xmtrPin, OUTPUT)
-digitalWrite(xmtrPin,LOW)
+digitalWrite(xmtrPin, LOW)
 
 
 def ookPulse(on, off):
@@ -31,6 +31,7 @@ def ookPulse(on, off):
     digitalWrite(xmtrPin, LOW)
     delayMicroseconds(off)
 
+
 def pt2262Send(packet):
     for repeat in range(0, 4):
 
@@ -38,22 +39,22 @@ def pt2262Send(packet):
 
             if packet[x] == '0':
 #                print '0'
-                ookPulse(PULSESHORT,PULSELONG)
-                ookPulse(PULSESHORT,PULSELONG)
+                ookPulse(PULSESHORT, PULSELONG)
+                ookPulse(PULSESHORT, PULSELONG)
             elif packet[x] == '1':
 #                print '1'
-                ookPulse(PULSELONG,PULSESHORT)
-                ookPulse(PULSELONG,PULSESHORT)
+                ookPulse(PULSELONG, PULSESHORT)
+                ookPulse(PULSELONG, PULSESHORT)
             elif packet[x] == 'F' or packet[x] == 'f':
 #                print 'f'
-                ookPulse(PULSESHORT,PULSELONG)
-                ookPulse(PULSELONG,PULSESHORT)
+                ookPulse(PULSESHORT, PULSELONG)
+                ookPulse(PULSELONG, PULSESHORT)
             elif packet[x] == 'U' or packet[x] == 'u':
 #                print 'u'
-                ookPulse(PULSELONG,PULSESHORT)
-                ookPulse(PULSESHORT,PULSELONG)
+                ookPulse(PULSELONG, PULSESHORT)
+                ookPulse(PULSESHORT, PULSELONG)
 
-        ookPulse(PULSESHORT,PULSESYNC)
+        ookPulse(PULSESHORT, PULSESYNC)
 #        print 'sync'
 
 if __name__ == "__main__":
