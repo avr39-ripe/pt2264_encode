@@ -22,8 +22,8 @@ LONGMAX = FoscClong + FoscTol
 LONGMIN = FoscClong - FoscTol
 SAMPLES = 120
 
-edges = [0, ] * SAMPLES
-pulses = [0, ] * SAMPLES
+edges = [0L, ] * SAMPLES
+pulses = [0L, ] * SAMPLES
 polarity = [0, ] * SAMPLES
 pulsePair = ['0', ] * SAMPLES
 addressData = ['\0', ] * SAMPLES
@@ -45,19 +45,18 @@ def pt2272_decode():
             #low to high edge detected
             edges[x] = micros()
             polarity[x] = 1
-            print("0>1 ")
+#            print("0>1 ")
         while digitalRead(recvPin):
             #high to low edge detected
             edges[x+1] = micros()
             polarity[x+1] = 0
-            print("1>0 ")
-
-#    digitalWrite(ledPin, HIGH)  # LED ON after edges samples detected
-
+#            print("1>0 ")
     for x in range(1, SAMPLES):
         pulses[x-1] = edges[x] - edges[x-1]
         #pulse widths
-
+    print "Pulses ", pulses
+    print "Polarity ", polarity
+    print "Edges ", edges
     # NOTE: array position 0 should be a high polarity pulse
     # So assuming so, then all odd values are low.
     for x in range(0, SAMPLES, 2):
@@ -110,5 +109,4 @@ def pt2272_decode():
 #    digitalWrite(ledPin, LOW)  # LED off after edge samples detected
 
 if __name__ == "__main__":
-    while True:
         pt2272_decode()
