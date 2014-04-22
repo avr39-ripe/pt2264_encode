@@ -61,73 +61,57 @@ def pt2272_decode():
                 if pulses[x+1]>SHORTMIN and pulses[x+1]<SHORTMAX:#ShortLow valid
                     #valid interim digit 1
                     pulsePair[x/2]='1'
-      }else if(pulses[x] < pulses[x+1]){ // Hi shorter than Lo- ZERO? or SYNC?
-        if(pulses[x]>SHORTMIN && pulses[x]<SHORTMAX) //ShortHigh valid
-          if(pulses[x+1]>LONGMIN && pulses[x+1]<LONGMAX){ //LongLo valid
-            //valid interim digit 0
-             pulsePair[x/2]='0';
-          }else if(pulses[x+1]>14400 && pulses[x+1]<<17600){  //Sync valid
-            // valid interim digit S(ync)
-            pulsePair[x/2]='S';
-          }
-      }
-    }
+        elif pulses[x] < pulses[x+1]:#Hi shorter than Lo- ZERO? or SYNC?
+            if pulses[x]>SHORTMIN and pulses[x]<SHORTMAX:#ShortHigh valid
+                if pulses[x+1]>LONGMIN and pulses[x+1]<LONGMAX:#LongLo valid
+                    #valid interim digit 0
+                    pulsePair[x/2]='0'
+            elif pulses[x+1]>14400 and pulses[x+1]<<17600):#Sync valid
+                #valid interim digit S(ync)
+                pulsePair[x/2]='S'
+    # Analyse to get actual security CODES
+    x=0
+    y=0
 
-// Analyse to get actual security CODES
-int x=0;
-int y=0;
+    # Find the first S
+    while pulsePair[x] != 'S' and x<SAMPLES/2:
+        x++
 
-// Find the first S
-while(pulsePair[x] != 'S' && x<SAMPLES/2) x++;
+    # Found S so start converting until next S
+    x++
 
+    while pulsePair[x] != 'S' and x<SAMPLES/2:
+        if pulsePair[x]=='0' and pulsePair[x+1]=='0':
+            print('0')#ZERO LO (00)
+            addressData[y]='0'
+        elif pulsePair[x]=='1' and pulsePair[x+1]=='1':
+            print('1')#ONE HI (11)
+            addressData[y]='1'
+        elif pulsePair[x]=='0' and pulsePair[x+1]=='1':
+            print('F')#Float TriState (01)
+            addressData[y]='F'
+        else:
+            print('U')# Undefined (10)
+            addressData[y]='U'
+        x+=2
+        y++
 
-//Found S so start converting until next S
-x++;
+    if pulsePair[x] == 'S':
+        addressData[y]='\0'# NULL ends string
 
-while(pulsePair[x] != 'S' && x<SAMPLES/2){
-if(pulsePair[x]=='0' && pulsePair[x+1]=='0'){
-//    Serial.print('0'); //ZERO LO (00)
-addressData[y]='0';
-}else if(pulsePair[x]=='1' && pulsePair[x+1]=='1'){
-//    Serial.print('1'); // ONE HI (11)
-addressData[y]='1';
-}else if(pulsePair[x]=='0' && pulsePair[x+1]=='1'){
-//    Serial.print('F'); // Float TriState (01)
-addressData[y]='F';
-}else{
-//    Serial.print('U'); // Undefined (10)
-addressData[y]='U';
-}
-x+=2;
-y++;
-}
-
-if(pulsePair[x] == 'S'){
-
-addressData[y]='\0'; // NULL ends string
-
-Serial.print(addressData); //Print if not empty
-if(!strcmp(addressData,"00F0FF00FFFF")){
-//  Serial.print(addressData);
-  Serial.println(" CH 15 - Family Room Alert");
-}else
-if(!strcmp(addressData,"F000FF00FFFF")){
-//  Serial.print(addressData);
-  Serial.println(" CH 13 - Garage Alert");
-}else
-  Serial.println(" - Unknown Device");
-
-clearAddressData;
-delay(1500);
-} // test for S
-
-
-digitalWrite(led, LOW); // LED off after edge samples detected
-
-
-//  delay(400);
-}
-
-void clearAddressData(void){
-  for(int x;x<SAMPLES/2;x++) addressData[x] = '\0';
-}
+        print(addressData)#Print if not empty
+'''        if(!strcmp(addressData,"00F0FF00FFFF")){
+        //  Serial.print(addressData);
+          Serial.println(" CH 15 - Family Room Alert");
+        }else
+        if(!strcmp(addressData,"F000FF00FFFF")){
+        //  Serial.print(addressData);
+          Serial.println(" CH 13 - Garage Alert");
+        }else
+          Serial.println(" - Unknown Device");
+'''
+        for x in range(0, SAMPLES/2):
+            addressData[x] = '\0'
+        delay(1500)
+    # test for S
+    digitalWrite(ledPin, LOW)# LED off after edge samples detected
