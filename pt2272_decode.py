@@ -9,8 +9,8 @@ OUTPUT = 1
 LOW = 0
 HIGH = 1
 
-recvPin = 1
-# ledPin = 2
+recvPin = 2
+# ledPin = 1
 
 FoscCshort = 500
 FoscClong = 1500
